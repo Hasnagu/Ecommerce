@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<script src="https://cdn.tailwindcss.com"></script>
+
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-400 via-pink-300 to-blue-200 relative overflow-hidden">
+
+    <!-- Animated background circles -->
+    <div class="absolute w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob top-0 left-10"></div>
+    <div class="absolute w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000 bottom-0 right-10"></div>
+    
+    <!-- FORM CARD -->
+    <div class="relative z-10 bg-white/90 backdrop-blur-md shadow-2xl rounded-3xl p-10 w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-10">
+
+        <!-- LEFT IMAGE -->
+        <div class="flex items-center justify-center">
+            <div class="rounded-full overflow-hidden shadow-2xl transform transition duration-500 hover:scale-110 hover:rotate-3">
+                <img src="https://cdn-icons-png.flaticon.com/512/295/295128.png" 
+                     class="w-64 md:w-72 lg:w-80 opacity-95">
+            </div>
+        </div>
+
+        <!-- RIGHT FORM -->
+        <div class="flex flex-col justify-center">
+            <h2 class="text-4xl font-bold text-gray-800 mb-2">Welcome Back</h2>
+            <p class="text-gray-500 mb-6">Connect to your account.</p>
+
+            <!-- ERROR MESSAGE -->
+            {% if messages %}
+            <div class="bg-red-100 text-red-700 p-4 rounded-xl mb-4 shadow-inner">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="POST" class="space-y-5">
+                {% csrf_token %}
+
+                <div>
+                    <label class="text-sm font-medium text-gray-600">Username</label>
+                    <input 
+                        type="text" 
+                        name="username" 
+                        required
+                        class="w-full p-3 rounded-xl border border-gray-300 bg-white focus:ring-2 focus:ring-purple-500 transition shadow-sm hover:shadow-md"
+                    >
+                </div>
+
+                <div>
+                    <label class="text-sm font-medium text-gray-600">Password</label>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        required
+                        class="w-full p-3 rounded-xl border border-gray-300 bg-white focus:ring-2 focus:ring-purple-500 transition shadow-sm hover:shadow-md"
+                    >
+                </div>
+
+                <button
+                    type="submit"
+                    class="w-full bg-purple-600 hover:bg-purple-700 transition text-white font-semibold py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    Login
+                </button>
+            </form>
+
+            <p class="text-gray-600 text-sm mt-4">
+                Don't have an account?
+                <a href="{% url 'register' %}" class="text-purple-600 font-semibold hover:underline">
+                    Register now
+                </a>
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Tailwind animation -->
+<style>
+@keyframes blob {
+  0%, 100% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+.animate-blob {
+  animation: blob 8s infinite;
+}
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+</style>
+
+{% endblock %}

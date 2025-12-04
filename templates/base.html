@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}E-commerce{% endblock %}</title>
+
+    {% load static %}
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              purpleDark: '#2b0a5c',
+              purpleLight: '#6b1fa7',
+            }
+          }
+        }
+      }
+    </script>
+
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- NAVBAR SIMPLIFIÉE -->
+    <header class="w-full bg-gray-900 text-white py-3 px-6 flex justify-center gap-8 shadow-md">
+        <a href="{% url 'product_list' %}" class="hover:underline">Accueil</a>
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'cart' %}" class="hover:underline">Panier</a>
+            <a href="{% url 'logout' %}" class="hover:underline">Déconnexion</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="hover:underline">Connexion</a>
+        {% endif %}
+    </header>
+
+    <!-- CONTENU -->
+    <main class="min-h-screen">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+</body>
+</html>

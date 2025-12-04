@@ -1,0 +1,49 @@
+stages:
+  - build
+  - test
+  - docker
+
+variables:
+  # Image Docker finale
+  DOCKER_IMAGE: registry.gitlab.com/<ton-username>/ecommerce_project:latest
+  # Cache pip pour accélérer les builds
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+# Cache pour pip
+cache:
+  paths:
+    - .cache/pip
+
+# Étape 1 : Installer les dépendances Python
+build:
+  stage: build
+  image: python:3.12
+  script:
+    - python -m pip install --upgrade pip
+    - pip install -r requirements.txt
+
+# Étape 2 : Lancer les tests Django
+test:
+  stage: test
+  image: python:3.12
+  script:
+    - python -m pip install --upgrade pip
+    - pip install -r requirements.txt
+    - python manage.py test
+
+# Étape 3 : Build et push Docker
+docker_build:
+  stage: docker
+  image: docker:20.10.16
+  services:
+    - docker:dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  before_script:
+    # Login au registry GitLab
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+  script:
+    # Build de l'image Docker
+    - docker build -t $DOCKER_IMAGE .
+    # Push de l'image vers GitLab Registry
+    - docker push $DOCKER_IMAGE

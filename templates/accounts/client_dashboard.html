@@ -1,0 +1,328 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Shop – Dashboard Client</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* ============================= GLOBAL ============================== */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            background: #f5f6fa;
+            color: #333;
+        }
+
+        a { text-decoration: none; }
+
+        /* ============================= SIDEBAR ============================== */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #7b5bff, #6b3eff);
+            color: #fff;
+            min-height: 100vh;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-radius: 0 25px 25px 0;
+            box-shadow: 5px 0 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .user-card {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .sidebar .user-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            object-fit: cover;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar .user-card h3 {
+            font-weight: 600;
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        .sidebar .user-card p {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin-top: 10px;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .sidebar a i {
+            margin-right: 12px;
+            font-size: 18px;
+            width: 25px;
+            text-align: center;
+        }
+
+        .sidebar a:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateX(5px);
+        }
+
+        .sidebar a.active {
+            background: rgba(255,255,255,0.35);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .sidebar a.logout {
+            background: #ff5b5b;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .sidebar a.logout:hover { background: #ff4040; transform: translateX(3px); }
+
+        /* ============================= MAIN CONTENT ============================== */
+        .main {
+            flex: 1;
+            padding: 25px 40px;
+        }
+
+        /* HEADER */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .topbar .search {
+            width: 350px;
+            position: relative;
+        }
+
+        .topbar .search input {
+            width: 100%;
+            padding: 12px 40px;
+            border-radius: 10px;
+            border: 1px solid #dcdfe6;
+            background: #fff;
+        }
+
+        .topbar .search i {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            color: #777;
+        }
+
+        .topbar-icons i {
+            font-size: 20px;
+            margin-left: 18px;
+            cursor: pointer;
+            color: #555;
+            transition: 0.3s;
+        }
+
+        .topbar-icons i:hover { color: #7b5bff; }
+
+        /* ============================= PRODUCT GRID ============================== */
+        .section-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 15px;
+            border: 1px solid #e4e7ef;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.07);
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 12px;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .card h4 {
+            margin: 10px 0 5px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .card .price {
+            font-size: 16px;
+            font-weight: bold;
+            color: #7b5bff;
+        }
+
+        .rating {
+            margin-top: 6px;
+            color: #ffb400;
+            font-size: 13px;
+        }
+
+        .badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #7b5bff;
+            padding: 5px 10px;
+            font-size: 11px;
+            border-radius: 6px;
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* ============================= FILTERS ============================== */
+        .filters {
+            width: 270px;
+            background: #fff;
+            border-left: 1px solid #e4e7ef;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .filters h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .filter-block {
+            margin-bottom: 25px;
+        }
+
+        .filter-block h4 {
+            font-size: 15px;
+            margin-bottom: 10px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .filter-block select,
+        .filter-block input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <div>
+        <div class="user-card">
+            <img src="https://i.pravatar.cc/150?img=3">
+            <h3>{{ user.username }}</h3>
+            <p>@client</p>
+        </div>
+
+        <a href="{% url 'client_dashboard' %}" class="sidebar-link active"><i class="fa fa-home"></i> Tableau de bord</a>
+        <a href="{% url 'cart' %}" class="sidebar-link"><i class="fa fa-shopping-cart"></i> Panier</a>
+        <a href="{% url 'client_orders' %}" class="sidebar-link"><i class="fa fa-box"></i> Mes commandes</a>
+        <a href="{% url 'edit_profile' %}" class="sidebar-link"><i class="fa fa-user-edit"></i> Modifier profil</a>
+    </div>
+
+    <a href="{% url 'logout' %}" class="sidebar-link logout"><i class="fa fa-sign-out"></i> Déconnexion</a>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+    <!-- HEADER -->
+    <div class="topbar">
+        <div class="search">
+            <i class="fa fa-search"></i>
+            <input type="text" placeholder="Rechercher un produit...">
+        </div>
+
+        <div class="topbar-icons">
+            <i class="fa fa-bell"></i>
+            <i class="fa fa-user"></i>
+        </div>
+    </div>
+
+    <h2 class="section-title">Produits en tendance</h2>
+
+    <!-- PRODUCT GRID -->
+    <div class="product-grid">
+        {% for product in products %}
+        <a href="{% url 'product_detail' product.id %}" class="card">
+            <div style="position:relative;">
+                {% if product.is_new %}
+                <span class="badge">NOUVEAU</span>
+                {% endif %}
+                {% if product.image %}
+                <img src="{{ product.image.url }}">
+                {% else %}
+                <img src="https://via.placeholder.com/300x200?text=Aucune+image">
+                {% endif %}
+            </div>
+            <h4>{{ product.name }}</h4>
+            <div class="rating">
+                ★★★★☆ 3.5
+            </div>
+            <p class="price">{{ product.price }} TND</p>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters">
+    <h3>Filtres</h3>
+    <div class="filter-block">
+        <h4>Catégorie</h4>
+        <select>
+            <option>Tout</option>
+            <option>PC</option>
+            <option>Téléphone</option>
+            <option>Accessoires</option>
+        </select>
+    </div>
+    <div class="filter-block">
+        <h4>Prix</h4>
+        <input type="range" min="0" max="2000" value="500">
+    </div>
+    <div class="filter-block">
+        <h4>Note</h4>
+        ★★★★★
+    </div>
+</div>
+
+</body>
+</html>

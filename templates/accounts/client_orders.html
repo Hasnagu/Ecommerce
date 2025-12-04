@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="flex min-h-screen bg-gray-100">
+
+    <!-- SIDEBAR GAUCHE -->
+    <aside class="w-52 bg-gradient-to-b from-purple-50 to-white shadow-lg p-6 flex flex-col gap-6 fixed h-full rounded-r-3xl">
+        <h2 class="text-xl font-bold mb-4 text-gray-800">Menu Rapide</h2>
+
+        <a href="{% url 'client_dashboard' %}" 
+           class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-100 hover:shadow-md transition">
+            <span class="text-gray-700 font-medium">🏠 Dashboard</span>
+        </a>
+
+        <a href="{% url 'cart' %}" 
+           class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-100 hover:shadow-md transition">
+            <span class="text-gray-700 font-medium">🛒 Panier</span>
+        </a>
+
+        <a href="{% url 'client_orders' %}" 
+           class="flex items-center gap-3 px-4 py-3 rounded-xl bg-purple-100 text-purple-700 font-medium shadow-inner">
+            <span>🧾 Mes commandes</span>
+        </a>
+    </aside>
+
+    <!-- CONTENU PRINCIPAL -->
+    <div class="flex-1 ml-56 p-6">
+
+        <h2 class="text-4xl font-extrabold mb-8 text-gray-800 tracking-tight">
+            🧾 Mes commandes
+        </h2>
+
+        {% if orders %}
+        <div class="overflow-x-auto shadow-xl rounded-xl border border-gray-200">
+
+            <table class="min-w-full bg-white rounded-xl overflow-hidden">
+                <thead class="bg-gray-100 border-b">
+                    <tr>
+                        <th class="px-6 py-4 text-left font-semibold text-gray-700">Commande</th>
+                        <th class="px-6 py-4 text-left font-semibold text-gray-700">Date</th>
+                        <th class="px-6 py-4 text-left font-semibold text-gray-700">Total</th>
+                        <th class="px-6 py-4 text-left font-semibold text-gray-700">Statut</th>
+                        <th class="px-6 py-4 text-left font-semibold text-gray-700">Adresse</th>
+                        <th class="px-6 py-4 text-left font-semibold text-gray-700">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y divide-gray-200">
+                    {% for order in orders %}
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="px-6 py-4 font-medium text-gray-900">#{{ order.id }}</td>
+                        <td class="px-6 py-4 text-gray-700">{{ order.created_at|date:"d/m/Y H:i" }}</td>
+                        <td class="px-6 py-4 font-semibold text-gray-900">{{ order.total_price }} €</td>
+                        <td class="px-6 py-4">
+                            <span class="
+                                px-3 py-1 rounded-full text-sm font-medium
+                                {% if order.status == 'Pending' or order.status == 'en_attente' %}
+                                    bg-yellow-100 text-yellow-700
+                                {% elif order.status == 'Completed' %}
+                                    bg-green-100 text-green-700
+                                {% elif order.status == 'Cancelled' %}
+                                    bg-red-100 text-red-700
+                                {% else %}
+                                    bg-gray-200 text-gray-700
+                                {% endif %}
+                            ">
+                                ● {{ order.status }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-gray-700">
+                            {{ order.shipping_address }}<br>
+                            <span class="text-sm text-gray-500">{{ order.postal_code }}</span>
+                        </td>
+
+                        <!-- Actions -->
+                        <td class="px-6 py-4 flex gap-2">
+                            <a href="{% url 'order_pdf' order.id %}"
+                               class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm flex-1 text-center">
+                                📄 PDF
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% else %}
+        <div class="p-8 bg-yellow-50 border border-yellow-300 rounded-xl shadow">
+            <p class="text-yellow-800 text-xl font-semibold flex items-center">
+                🔔 Vous n'avez pas encore passé de commande.
+            </p>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

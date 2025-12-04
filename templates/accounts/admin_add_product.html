@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-xl mx-auto mt-10 bg-white p-6 rounded-xl shadow">
+
+    <h1 class="text-3xl font-bold mb-6">➕ Ajouter un produit</h1>
+
+    <!-- IMPORTANT → enctype pour upload image -->
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label class="block font-bold">Nom du produit</label>
+        <input name="name" required class="w-full p-3 border rounded-xl mb-4">
+
+        <label class="block font-bold">Prix</label>
+        <input name="price" type="number" step="0.01" required class="w-full p-3 border rounded-xl mb-4">
+
+        <label class="block font-bold">Description</label>
+        <textarea name="description" class="w-full p-3 border rounded-xl mb-4"></textarea>
+
+        <!-- CHAMP IMAGE -->
+        <label class="block font-bold">Image du produit</label>
+        <input name="image" type="file" accept="image/*"
+               class="w-full p-3 border rounded-xl mb-4 bg-gray-50">
+
+        <button class="w-full bg-purple-600 text-white p-3 rounded-xl hover:bg-purple-700">
+            Ajouter
+        </button>
+    </form>
+
+</div>
+{% endblock %}

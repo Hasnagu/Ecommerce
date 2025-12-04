@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Modifier Profil{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 flex">
+
+    <!-- ================================ -->
+    <!-- SIDEBAR GAUCHE -->
+    <!-- ================================ -->
+    <aside class="w-64 bg-gradient-to-b from-purple-600 to-purple-400 text-white flex flex-col p-6 space-y-6">
+
+        <div class="text-center mb-6">
+            <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png"
+                 class="w-20 h-20 rounded-full mx-auto border-2 border-white shadow-lg">
+            <h2 class="mt-2 font-bold text-lg">{{ user.username }}</h2>
+            <p class="text-sm text-purple-100">{{ user.email }}</p>
+        </div>
+
+        <ul class="space-y-3 flex-1">
+            <li>
+                <a href="{% url 'client_dashboard' %}" class="flex items-center gap-3 py-2 px-4 rounded-lg hover:bg-purple-500 transition">
+                    🏠 Tableau de bord
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'checkout' %}" class="flex items-center gap-3 py-2 px-4 rounded-lg hover:bg-purple-500 transition">
+                    💳 Passer commande
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'client_orders' %}" class="flex items-center gap-3 py-2 px-4 rounded-lg hover:bg-purple-500 transition">
+                    🧾 Mes commandes
+                </a>
+            </li>
+            <li>
+                <a href="#" class="flex items-center gap-3 py-2 px-4 rounded-lg hover:bg-purple-500 transition">
+                    ❓ Aide / FAQ
+                </a>
+            </li>
+        </ul>
+
+        <a href="{% url 'logout' %}" class="text-sm bg-white text-purple-600 px-4 py-2 rounded-lg text-center hover:bg-purple-100 transition">
+            Se déconnecter
+        </a>
+
+    </aside>
+
+    <!-- ================================ -->
+    <!-- CONTENU PRINCIPAL -->
+    <!-- ================================ -->
+    <div class="flex-1 p-10">
+
+        <!-- TITRE -->
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Modifier Profil</h1>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+
+            <!-- FORMULAIRE -->
+            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200 space-y-6">
+
+                <div class="flex flex-col items-center mb-6">
+                    <div class="relative">
+                        <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png"
+                             class="w-24 h-24 rounded-full shadow-md border-2 border-purple-300">
+
+                        <!-- Icon Edit -->
+                        <label class="absolute bottom-0 right-0 bg-purple-600 text-white w-7 h-7 grid place-items-center rounded-full cursor-pointer hover:bg-purple-700 transition">
+                            <i class="fa fa-pen text-xs"></i>
+                            <input type="file" name="profile_image" class="hidden">
+                        </label>
+                    </div>
+                </div>
+
+                <form method="POST" enctype="multipart/form-data" class="space-y-4">
+                    {% csrf_token %}
+
+                    <div>
+                        <label class="text-sm font-medium text-gray-600">Nom complet</label>
+                        <input type="text" name="username" value="{{ user.username }}"
+                               class="mt-1 w-full p-3 bg-purple-50 border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:outline-none transition">
+                    </div>
+
+                    <div>
+                        <label class="text-sm font-medium text-gray-600">Email</label>
+                        <input type="email" name="email" value="{{ user.email }}"
+                               class="mt-1 w-full p-3 bg-purple-50 border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:outline-none transition">
+                    </div>
+
+                    <div>
+                        <label class="text-sm font-medium text-gray-600">Téléphone</label>
+                        <input type="text" name="phone" placeholder="Votre numéro"
+                               class="mt-1 w-full p-3 bg-purple-50 border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:outline-none transition">
+                    </div>
+
+                    <div>
+                        <label class="text-sm font-medium text-gray-600">Ville</label>
+                        <input type="text" name="city" placeholder="Votre ville"
+                               class="mt-1 w-full p-3 bg-purple-50 border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:outline-none transition">
+                    </div>
+
+                    <div>
+                        <label class="text-sm font-medium text-gray-600">Adresse</label>
+                        <input type="text" name="house_address" placeholder="Votre adresse"
+                               class="mt-1 w-full p-3 bg-purple-50 border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:outline-none transition">
+                    </div>
+
+                    <button type="submit"
+                            class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-xl shadow-md transition">
+                        Enregistrer les modifications
+                    </button>
+                </form>
+
+            </div>
+
+            <!-- INFOS RAPIDES -->
+            <div class="bg-gradient-to-b from-purple-100 to-purple-50 p-8 rounded-2xl shadow-lg border border-purple-200">
+                <h3 class="text-xl font-bold text-purple-800 mb-6">Infos rapides</h3>
+
+                <ul class="space-y-4 text-purple-700">
+                    <li><span class="font-semibold">Nom :</span> {{ user.username }}</li>
+                    <li><span class="font-semibold">Email :</span> {{ user.email }}</li>
+                    <li><span class="font-semibold">Téléphone :</span> Non renseigné</li>
+                    <li><span class="font-semibold">Ville :</span> Non renseigné</li>
+                    <li><span class="font-semibold">Adresse :</span> Non renseignée</li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}

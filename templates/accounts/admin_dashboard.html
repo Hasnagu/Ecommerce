@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="flex flex-col md:flex-row p-6 space-y-10 md:space-y-0 md:space-x-6">
+
+    <!-- ================================ -->
+    <!-- BARRE D'ACTIONS -->
+    <!-- ================================ -->
+    <aside class="w-full md:w-64 bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md border border-gray-200 dark:border-gray-700">
+        <h2 class="text-gray-500 text-xs font-bold tracking-widest mb-3">
+            ACTIONS
+        </h2>
+
+        <ul class="space-y-1">
+            <li>
+                <a href="{% url 'admin_add_product' %}" class="flex items-center gap-3 py-2 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-200">
+                    <div class="w-9 h-9 flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg">➕</div>
+                    <span class="text-sm font-medium">Ajouter produit</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'admin_products' %}" class="flex items-center gap-3 py-2 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-200">
+                    <div class="w-9 h-9 flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg">🛍️</div>
+                    <span class="text-sm font-medium">Produits</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'admin_manage_users' %}" class="flex items-center gap-3 py-2 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-200">
+                    <div class="w-9 h-9 flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg">👥</div>
+                    <span class="text-sm font-medium">Utilisateurs</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'admin_orders' %}" class="flex items-center gap-3 py-2 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-200">
+                    <div class="w-9 h-9 flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg">📦</div>
+                    <span class="text-sm font-medium">Commandes</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'edit_profile' %}" class="flex items-center gap-3 py-2 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-200">
+                    <div class="w-9 h-9 flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg">👤</div>
+                    <span class="text-sm font-medium">Profil</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- ================================ -->
+    <!-- CONTENU DU DASHBOARD -->
+    <!-- ================================ -->
+    <div class="flex-1 space-y-10">
+
+        <!-- Titre -->
+        <div>
+            <h1 class="text-4xl font-extrabold text-gray-800 dark:text-white tracking-tight">📊 Aperçu du magasin</h1>
+            <p class="text-gray-500 dark:text-gray-300 mt-1">Bienvenue sur votre tableau de bord</p>
+        </div>
+
+        <!-- CARTES KPI -->
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition">
+                <div class="text-blue-500 text-5xl mb-3">💼</div>
+                <p class="text-3xl font-bold dark:text-white">$5,254</p>
+                <p class="text-gray-500 dark:text-gray-300">Revenus totaux</p>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition">
+                <div class="text-purple-500 text-5xl mb-3">💳</div>
+                <p class="text-3xl font-bold dark:text-white">$4,955</p>
+                <p class="text-gray-500 dark:text-gray-300">Revenus mensuels</p>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition">
+                <div class="text-red-500 text-5xl mb-3">↩️</div>
+                <p class="text-3xl font-bold dark:text-white">$4,434</p>
+                <p class="text-gray-500 dark:text-gray-300">Remboursements totaux</p>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 hover:shadow-xl transition">
+                <div class="text-green-500 text-5xl mb-3">📈</div>
+                <p class="text-3xl font-bold dark:text-white">80%</p>
+                <p class="text-gray-500 dark:text-gray-300">Marge bénéficiaire</p>
+            </div>
+        </div>
+
+        <!-- VENTES HEBDOMADAIRES -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow border dark:border-gray-700">
+                <p class="text-gray-500">Ventes hebdomadaires</p>
+                <p class="text-3xl font-bold dark:text-white">$14,434</p>
+                <p class="text-blue-600 font-semibold">Total des ventes</p>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow border dark:border-gray-700">
+                <p class="text-gray-500">Cette année</p>
+                <p class="text-3xl font-bold dark:text-white">$44,434</p>
+                <p class="text-red-600 font-semibold">-10%</p>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow border dark:border-gray-700">
+                <p class="text-gray-500">Aujourd'hui</p>
+                <p class="text-3xl font-bold dark:text-white">$1,434</p>
+                <p class="text-green-600 font-semibold">+60%</p>
+            </div>
+        </div>
+
+        <!-- RÉPARTITION PAR SEXE -->
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border dark:border-gray-700 mt-10">
+            <h2 class="text-2xl font-bold mb-6 dark:text-white">Répartition des clients</h2>
+
+            <p class="font-semibold dark:text-gray-200">Hommes — 44%</p>
+            <div class="w-full bg-gray-200 dark:bg-gray-700 h-3 rounded-full mb-4">
+                <div class="bg-blue-500 h-3 rounded-full" style="width: 44%;"></div>
+            </div>
+
+            <p class="font-semibold dark:text-gray-200">Femmes — 55%</p>
+            <div class="w-full bg-gray-200 dark:bg-gray-700 h-3 rounded-full">
+                <div class="bg-pink-500 h-3 rounded-full" style="width: 55%;"></div>
+            </div>
+        </div>
+
+        <!-- MEILLEURS VENDEURS -->
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl border dark:border-gray-700 mt-10">
+            <h2 class="text-2xl font-bold mb-6 dark:text-white">Meilleurs vendeurs</h2>
+
+            <table class="w-full">
+                <thead>
+                    <tr class="border-b dark:border-gray-600 text-gray-500 dark:text-gray-300">
+                        <th class="py-3">Rang</th>
+                        <th class="py-3">Profil</th>
+                        <th class="py-3">Revenus</th>
+                        <th class="py-3">Ventes</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y dark:divide-gray-700 text-gray-700 dark:text-gray-200">
+                    <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                        <td class="py-3">#101</td>
+                        <td>
+                            <p class="font-semibold">Jacob Jones</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">@jones</p>
+                        </td>
+                        <td>$25,916</td>
+                        <td>4,863</td>
+                    </tr>
+
+                    <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                        <td class="py-3">#118</td>
+                        <td>
+                            <p class="font-semibold">James Mason</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">@jamesM</p>
+                        </td>
+                        <td>$13,989</td>
+                        <td>875</td>
+                    </tr>
+
+                    <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                        <td class="py-3">#148</td>
+                        <td>
+                            <p class="font-semibold">Elon Musk</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">@musk</p>
+                        </td>
+                        <td>$14,437</td>
+                        <td>1,548</td>
+                    </tr>
+
+                    <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                        <td class="py-3">#179</td>
+                        <td>
+                            <p class="font-semibold">Marie Clark</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">@mclark</p>
+                        </td>
+                        <td>$8,015</td>
+                        <td>752</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

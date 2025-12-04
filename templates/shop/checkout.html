@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto p-6 bg-gray-100 rounded-lg mt-6">
+
+    <h2 class="text-3xl font-bold mb-6 text-gray-800">Checkout</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <!-- FORMULAIRE -->
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-xl font-bold mb-4">Paiement</h3>
+
+            <form method="POST" class="space-y-4" id="checkoutForm">
+                {% csrf_token %}
+
+                <h3 class="text-xl font-bold mt-6 mb-2">Méthode de paiement</h3>
+
+                <select name="payment_method" id="paymentMethod" class="w-full border rounded px-3 py-2">
+                    <option value="card">Carte bancaire</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="cod">Cash on Delivery</option>
+                </select>
+
+                <!-- PAYMENTS UI -->
+                <div id="cardPayment" class="mt-4 space-y-3">
+                    <input type="text" placeholder="Numéro de carte"
+                           class="w-full border rounded px-3 py-2">
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="text" placeholder="MM / YYYY" class="w-full border rounded px-3 py-2">
+                        <input type="text" placeholder="CVV" class="w-full border rounded px-3 py-2">
+                    </div>
+                </div>
+
+                <div id="paypalPayment" class="mt-4 hidden">
+                    <p class="text-gray-700">Vous serez redirigé vers PayPal.</p>
+                </div>
+
+                <div id="codPayment" class="mt-4 hidden">
+                    <p class="text-gray-700">Paiement à la livraison.</p>
+                </div>
+
+                <button type="submit" class="w-full mt-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition">
+                    Confirmer la commande
+                </button>
+
+            </form>
+        </div>
+
+        <!-- RESUME -->
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-xl font-bold mb-4">Résumé de la commande</h3>
+
+            {% for item in cart_items %}
+                <p class="flex justify-between">
+                    <span>{{ item.product.name }} (x{{ item.quantity }})</span>
+                    <span>{{ item.total_price }} €</span>
+                </p>
+            {% endfor %}
+
+            <hr class="my-2">
+
+            <p class="flex justify-between"><span>Sous-total:</span> <span>{{ total }} €</span></p>
+            <p class="flex justify-between text-green-600"><span>Remise:</span> <span>-{{ discount }} €</span></p>
+            <p class="flex justify-between"><span>Livraison:</span> <span>{{ shipping }} €</span></p>
+
+            <p class="flex justify-between font-bold text-xl mt-2">
+                <span>Total:</span>
+                <span>{{ total_with_shipping }} €</span>
+            </p>
+
+            <p class="text-gray-500 text-sm mt-3">
+                Livraison estimée : {{ expected_delivery }}
+            </p>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const paymentMethod = document.getElementById('paymentMethod');
+    const cardPayment = document.getElementById('cardPayment');
+    const paypalPayment = document.getElementById('paypalPayment');
+    const codPayment = document.getElementById('codPayment');
+
+    function updatePaymentOptions() {
+        cardPayment.classList.add('hidden');
+        paypalPayment.classList.add('hidden');
+        codPayment.classList.add('hidden');
+
+        if (paymentMethod.value === 'card') cardPayment.classList.remove('hidden');
+        else if (paymentMethod.value === 'paypal') paypalPayment.classList.remove('hidden');
+        else if (paymentMethod.value === 'cod') codPayment.classList.remove('hidden');
+    }
+
+    paymentMethod.addEventListener('change', updatePaymentOptions);
+    window.addEventListener('DOMContentLoaded', updatePaymentOptions);
+</script>
+{% endblock %}

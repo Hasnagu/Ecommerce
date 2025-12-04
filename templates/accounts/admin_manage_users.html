@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex flex-col md:flex-row max-w-7xl mx-auto mt-10 px-6 gap-6">
+
+    <!-- ================================ -->
+    <!-- SIDEBAR ACTIONS -->
+    <!-- ================================ -->
+    <aside class="w-full md:w-64 bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-md border border-gray-200 dark:border-gray-700">
+        <h2 class="text-gray-500 text-xs font-bold tracking-widest mb-3">
+            ACTIONS
+        </h2>
+
+        <ul class="space-y-1">
+            <!-- Ajouter produit -->
+            <li>
+                <a href="{% url 'admin_add_product' %}"
+                   class="flex items-center gap-3 py-2 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-200">
+                    <div class="w-9 h-9 flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg">
+                        ➕
+                    </div>
+                    <span class="text-sm font-medium">Ajouter produit</span>
+                </a>
+            </li>
+
+            <!-- Back Dashboard -->
+            <li>
+                <a href="{% url 'admin_dashboard' %}"
+                   class="flex items-center gap-3 py-2 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-200">
+                    <div class="w-9 h-9 flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg">
+                        🏠
+                    </div>
+                    <span class="text-sm font-medium">Back Dashboard</span>
+                </a>
+            </li>
+
+            <!-- Utilisateurs -->
+            <li>
+                <a href="{% url 'admin_manage_users' %}"
+                   class="flex items-center gap-3 py-2 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-200">
+                    <div class="w-9 h-9 flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg">
+                        👥
+                    </div>
+                    <span class="text-sm font-medium">Utilisateurs</span>
+                </a>
+            </li>
+
+            <!-- Commandes -->
+            <li>
+                <a href="{% url 'admin_orders' %}"
+                   class="flex items-center gap-3 py-2 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-200">
+                    <div class="w-9 h-9 flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg">
+                        📦
+                    </div>
+                    <span class="text-sm font-medium">Commandes</span>
+                </a>
+            </li>
+
+            <!-- Profil -->
+            <li>
+                <a href="{% url 'edit_profile' %}"
+                   class="flex items-center gap-3 py-2 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-700 dark:text-gray-200">
+                    <div class="w-9 h-9 flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-lg">
+                        👤
+                    </div>
+                    <span class="text-sm font-medium">Profil</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- ================================ -->
+    <!-- LISTING UTILISATEURS -->
+    <!-- ================================ -->
+    <div class="flex-1">
+
+        <!-- HEADER -->
+        <div class="bg-[#123456] shadow rounded-2xl p-6 mb-6 text-white">
+            <h2 class="text-2xl font-bold">User List</h2>
+
+            <div class="flex justify-between items-center mt-4">
+                <div class="flex items-center gap-2">
+                    <span>Show</span>
+                    <select class="rounded-lg px-2 py-1 text-sm text-gray-800">
+                        <option>10</option>
+                        <option>25</option>
+                        <option>50</option>
+                    </select>
+                    <span>entries</span>
+                </div>
+
+                <input type="text" placeholder="Search..."
+                    class="rounded-lg px-3 py-1 text-sm text-gray-900" />
+            </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="bg-white shadow-xl rounded-2xl overflow-hidden border border-[#12345633]">
+            <table class="w-full text-left">
+
+                <!-- TABLE HEADER -->
+                <thead class="bg-[#123456] text-white text-sm uppercase tracking-wide">
+                    <tr>
+                        <th class="p-4">Profile</th>
+                        <th class="p-4">Name</th>
+                        <th class="p-4">Email</th>
+                        <th class="p-4">Country</th>
+                        <th class="p-4">Status</th>
+                        <th class="p-4">Join Date</th>
+                    </tr>
+                </thead>
+
+                <tbody class="text-gray-800">
+
+                    {% for user in users %}
+                    <tr class="border-b transition duration-200 hover:bg-[#1234560F]">
+
+                        <!-- Avatar -->
+                        <td class="p-4">
+                            <div class="w-10 h-10 rounded-xl bg-[#123456] flex items-center justify-center shadow-md">
+                                <span class="text-white font-bold text-lg">
+                                    {{ user.username|first|upper }}
+                                </span>
+                            </div>
+                        </td>
+
+                        <!-- Name -->
+                        <td class="p-4 font-semibold text-[#123456]">
+                            {{ user.username }}
+                        </td>
+
+                        <!-- Email -->
+                        <td class="p-4 text-gray-600">
+                            {{ user.email }}
+                        </td>
+
+                        <!-- Country (static example) -->
+                        <td class="p-4 text-gray-500">
+                            -
+                        </td>
+
+                        <!-- Status badge -->
+                        <td class="p-4">
+                            {% if user.is_staff %}
+                                <span class="px-3 py-1 text-sm rounded-full bg-[#12345622] text-[#123456] font-semibold">
+                                    Active
+                                </span>
+                            {% else %}
+                                <span class="px-3 py-1 text-sm rounded-full bg-orange-100 text-orange-700 font-semibold">
+                                    Pending
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Join date -->
+                        <td class="p-4 text-gray-600">
+                            {{ user.date_joined|date:"Y-m-d" }}
+                        </td>
+
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="p-6 text-center text-gray-400">
+                            Aucun utilisateur trouvé
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

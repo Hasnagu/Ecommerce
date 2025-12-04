@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mon Panier{% endblock %}
+
+{% block content %}
+<div class="flex bg-gray-100 min-h-screen">
+
+    <!-- ============================ -->
+    <!-- SIDEBAR GAUCHE -->
+    <!-- ============================ -->
+    <aside class="w-64 bg-white shadow-lg p-6 flex flex-col gap-4 fixed h-full rounded-r-3xl overflow-hidden">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">Menu Rapide</h2>
+
+        <!-- Dashboard -->
+        <a href="{% url 'client_dashboard' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-100 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6" />
+            </svg>
+            <span class="font-medium text-gray-700">Dashboard</span>
+        </a>
+
+        <!-- Checkout -->
+        <a href="{% url 'checkout' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-purple-600 hover:text-white transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l1-5H6.4M7 13L5.4 6H3m0 0h18" />
+            </svg>
+            <span class="font-medium">Passer à la commande</span>
+        </a>
+
+        <!-- Client Orders -->
+        <a href="{% url 'client_orders' %}" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-blue-100 hover:text-blue-700 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6h13v6M9 11V5h13v6M5 17h4v-6H5v6z" />
+            </svg>
+            <span class="font-medium text-gray-700">Mes commandes</span>
+        </a>
+    </aside>
+
+    <!-- ============================ -->
+    <!-- CONTENU PRINCIPAL -->
+    <!-- ============================ -->
+    <div class="flex-1 ml-72 p-6">
+
+        <h2 class="text-3xl font-bold mb-6 text-gray-800">Mon Panier</h2>
+
+        {% if cart_items %}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Liste produits -->
+            <div class="md:col-span-2">
+                <table class="min-w-full bg-white rounded-lg shadow overflow-hidden">
+                    <thead class="bg-purple-700 text-white">
+                        <tr>
+                            <th class="py-3 px-6 text-left">Produit</th>
+                            <th class="py-3 px-6 text-center">Quantité</th>
+                            <th class="py-3 px-6 text-right">Prix</th>
+                            <th class="py-3 px-6 text-right">Total</th>
+                            <th class="py-3 px-6 text-center">Supprimer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_items %}
+                        <tr class="border-b hover:bg-gray-50 transition">
+                            <!-- Produit -->
+                            <td class="py-4 px-6 flex items-center gap-4">
+                                {% if item.product.image %}
+                                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="h-12 w-12 object-cover rounded-lg">
+                                {% else %}
+                                <span class="text-gray-400">Pas d'image</span>
+                                {% endif %}
+                                <span>{{ item.product.name }}</span>
+                            </td>
+
+                            <!-- Quantité -->
+                            <td class="py-4 px-6 text-center">
+                                <div class="flex items-center justify-center gap-2">
+                                    <form method="post" action="{% url 'cart_decrease' item.product.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="bg-gray-200 text-gray-700 px-2 rounded hover:bg-gray-300 transition">-</button>
+                                    </form>
+                                    <span class="px-2 font-medium">{{ item.quantity }}</span>
+                                    <form method="post" action="{% url 'cart_increase' item.product.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="bg-gray-200 text-gray-700 px-2 rounded hover:bg-gray-300 transition">+</button>
+                                    </form>
+                                </div>
+                            </td>
+
+                            <!-- Prix -->
+                            <td class="py-4 px-6 text-right">{{ item.product.price }} €</td>
+
+                            <!-- Total ligne -->
+                            <td class="py-4 px-6 text-right">{{ item.total_price }} €</td>
+
+                            <!-- Supprimer -->
+                            <td class="py-4 px-6 text-center">
+                                <form method="post" action="{% url 'cart_remove' item.product.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="text-red-600 hover:text-red-800 text-xl">🗑️</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Résumé de commande -->
+            <div class="bg-white p-6 rounded-lg shadow h-fit">
+                <h3 class="text-xl font-bold mb-4">Résumé de la commande</h3>
+                <div class="mb-4">
+                    <label for="coupon" class="block font-medium mb-1">Code Promo</label>
+                    <form method="post" action="{% url 'apply_coupon' %}">
+                        {% csrf_token %}
+                        <div class="flex gap-2">
+                            <input type="text" name="coupon_code" id="coupon" class="w-full border border-gray-300 rounded px-3 py-2" placeholder="Entrez un code">
+                            <button type="submit" class="bg-purple-700 text-white px-4 py-2 rounded hover:bg-purple-800 transition">Appliquer</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="space-y-2">
+                    <p class="flex justify-between"><span>Sous-total :</span> <span>{{ total }} €</span></p>
+                    {% if discount %}
+                    <p class="flex justify-between text-green-600"><span>Remise :</span> <span>-{{ discount }} €</span></p>
+                    {% endif %}
+                    <p class="flex justify-between"><span>Livraison :</span> <span>{{ shipping }} €</span></p>
+                    <hr class="my-2">
+                    <p class="flex justify-between font-bold text-lg"><span>Total :</span> <span>{{ total_with_shipping }} €</span></p>
+                </div>
+
+                <div class="mt-4">
+                    <a href="{% url 'checkout' %}" class="block bg-purple-700 text-white text-center px-6 py-3 rounded hover:bg-purple-800 transition">Passer à la commande</a>
+                </div>
+
+                <p class="mt-4 text-sm text-gray-500">Date de livraison estimée : {{ expected_delivery }}</p>
+            </div>
+        </div>
+
+        {% else %}
+        <p class="text-gray-700">Votre panier est vide.</p>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
